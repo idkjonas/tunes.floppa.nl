@@ -54,6 +54,36 @@ templ Track(t sc.Track, stream string) {
 		<br/>
 		JavaScript is disabled! Audio playback may not work without it enabled.
 	</noscript>
+	<div id="addToFavorites" class="listing" style="width: fit-content; margin-block-start: 1rem; cursor: pointer;"></div>
+	<script>
+		const addToFavoritesBtn = document.getElementById("addToFavorites");
+
+		if (!localStorage.favorites) {
+			localStorage.favorites = "";
+		}
+
+		let isSongFavorited;
+
+		function update() {
+			isSongFavorited = localStorage.favorites.includes(location.pathname);
+			if (isSongFavorited) {
+				addToFavoritesBtn.textContent = "remove from favorites";
+			} else {
+				addToFavoritesBtn.textContent = "add to favorites";
+			}
+		}
+
+		update();
+
+		addToFavoritesBtn.onclick = () => {
+			if (isSongFavorited) {
+				localStorage.favorites = localStorage.favorites.replace(`${location.pathname},`, "");
+			} else {
+				localStorage.favorites += `${location.pathname},`;
+			}
+			update();
+		};
+	</script>
 	if t.Genre != "" {
 		<p class="tag">{ t.Genre }</p>
 	} else {
